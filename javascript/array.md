@@ -206,6 +206,29 @@ console.log(a2); // [{name: 1}, {name: 100}, {name: 3}]
 console.log(ary2); // [{name: 1}, {name: 100}, {name: 3}]
 ```
 
+
 ### 浅拷贝和深拷贝 ###
+
+深拷贝：创建一个新的对象和数组，将原对象的各个属性的“值”拷贝过来
+
+Object.assign:用于对象的合并，将源对象的所有可枚举属性，复制到目标对象，并返回合并后的目标对象
+
+注意：对于多层嵌套对象，上面方法不能实现
+
+拷贝所有层级
+JSON.parse(JSON.stringify(xxx))
+
+```javascript
+var array = [
+	{num:1},
+	{num:2},
+	{num:3}
+];
+
+var copyArray = JSON.parse(JSON.stringify(array));
+copyArray[0].num = 100;
+console.log(array);//[{num:1},{num:2},{num:3}]
+console.log(copyArray); //[{num:100},{num:2},{num:3}]
+```
 
 
