@@ -1,4 +1,4 @@
-##function、call、aooly、bind##
+## function、call、apply、bind ##
 
 ### 函数 ###
 
