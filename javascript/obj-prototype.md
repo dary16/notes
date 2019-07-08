@@ -114,3 +114,132 @@ hasOwnProperty()方法：检测某个属性值是否事对象的私有属性，�
 ###原型链：对象属性查找机制###
 
 每个实例都有一个属性proto属性，它指向当前实例所属类的prototype对象。当我们访问对象的一个属性时，如果有，就使用私有属性，如果没有就通过实例proto找到实例所属类的prototype上查找，如果找到就使用prototype上的属性，如果还没找到，就通过prototype的proto继续向上查找，一直到Object的prototype就停止查找，如果还没找到就返回undefined
+
+### JS中的面向对象 ###
+
+面向对象的研究范畴：类、封装、继承和多态
+
+1. 类：js中的类都是一个函数数据类型，都天生自带一个prototype属性，它的值是一个对象
+2. prototype:每个prototype对象都天生自带一个属性constructor,这个属性的值指向当前类的构造函数本身
+3. 对象都有一个proto属性，这个属性指向当前实例所属类的prototype
+
+#### 内置类：Array、String、Number、Function、Date等 ####
+
+### 原型上添加共有属性的方法 ###
+- 直接给原型添加方法
+
+```javascript
+Fn.prototype.say = 'hello';
+Fn.prototype.title = 'world';
+Fn.prototype.greeting = function () {
+  console.log('hi~');
+};
+```
+- 通过实例对象的proto,因为实例的proto指向当前实例所属类的原型对象，所以可以通过修改实例的proto来修改原型对象
+
+```javascript
+let f1 = new Fn();
+ f1.__proto__.say = 'hello';
+ f1.__proto__.hello = 'world';
+ f1.__proto__.greeting = function () {
+  console.log('hi~')
+ };
+```
+- 修改原型对象的指向
+
+```javascript
+Fn.prototype = {
+  say: 'hell',
+  hello: 'world',
+  greeting: function () {
+    console.log('hi~')
+  }
+};
+console.log(Fn.constructor); // Object
+Fn.prototype.constructor = Fn;
+// 当需要批量给原型增加属性或者方法时，我们需要把一个新的对象赋值给类的原型时，此时要给这个对象增加一个constructor属性
+```
+
+#### 选项卡插件封装 ####
+
+```javascript
+// 1. 创建选项卡类
+function Tab(options) {
+  // 1. 确保如何是通过new操作调用
+  if (!(this instanceof Tab)) {
+    console.error('Tab is a constructor which should be call with new');
+    return;
+  }
+
+  // 2. 参数合法校验
+  if (!options || !options.el) {
+    console.error('缺少el元素');
+    return;
+  }
+
+  // 3. 将传进来的参数对象保存到实例上
+  this._options = options;
+
+  // 4. 执行初始化
+  this.init();
+}
+
+
+
+// 为tab增加init方法：
+Tab.prototype.init = function () {
+  this.queryEle();
+  this.bindEvent();
+};
+
+// 为Tab增加公用的获取元素的方法
+Tab.prototype.queryEle = function () {
+  // 1. 从this中的options中的el获取最外层元素
+  const container = document.querySelector(this._options.el);
+
+  // 2. 获取选项卡头，并挂载到实例上
+  this.headerList = container.querySelectorAll('.header > li');
+
+  // 3. 获取所有的卡片并挂载到实例上
+  this.cardList = container.querySelectorAll('div');
+};
+
+// 为Tab增加公用的绑定事件的元素
+Tab.prototype.bindEvent = function () {
+  const HEADER_LIST = this.headerList; // 用一个常量缓存headerList
+  // 变量headerList给每个li绑定点击事件
+  for (let i = 0; i < HEADER_LIST.length; i++) {
+    HEADER_LIST[i].onclick = () => {
+      // 这里使用箭头函数，是因为我们希望这里的this是Tab的实例，如果不使用箭头函数，点击事件函数中的this就是选项卡头了
+      this.clearClass();
+      this.addClass(i);
+    }
+  }
+};
+
+// 为Tab类增加移除类名的方法
+Tab.prototype.clearClass = function () {
+  const HEADER_LIST = this.headerList;
+  const CARD_LIST = this.cardList;
+  for (let i = 0; i < HEADER_LIST.length; i++) {
+    HEADER_LIST[i].className = '';
+    CARD_LIST[i].className = '';
+  }
+};
+
+// 为Tab类添加类名的方法
+Tab.prototype.addClass = function (index) {
+  this.headerList[index].className = 'active';
+  this.cardList[index].className = 'active';
+};
+
+new Tab({
+  el: '#tab1'
+});
+
+new Tab({
+  el: '#tab2'
+});
+```
+
+
