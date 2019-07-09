@@ -52,3 +52,9 @@
 - 将DOM和CSSOM合并成一个渲染树
 - 根据渲染树来布局，计算每个节点的位置
 - 调用GPU绘制，合成图层，显示在屏幕上
+
+### 浏览器的内核
+- trident内核 IE
+- gecko内核 火狐
+- webkit内核 safari
+- webkit的分支内核blink chrome
