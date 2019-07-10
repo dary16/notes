@@ -164,7 +164,7 @@ let node = {
 
 let { sex, name } = node;
 
-console.log(type,name);
+console.log(sex,name);
 ```
 
 解构赋值

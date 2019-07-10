@@ -109,7 +109,7 @@ t2.teach();
 console.log(t1.teach === t2.teach); // true
 ```
 
-hasOwnProperty()方法：检测某个属性值是否事对象的私有属性，如果是则返回true
+hasOwnProperty()方法：检测某个属性值是否是对象的私有属性，如果是则返回true
 
 ###原型链：对象属性查找机制###
 
