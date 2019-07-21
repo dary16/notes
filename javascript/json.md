@@ -31,3 +31,15 @@ var json = JSON.stringify({a:'hello',b:'world'});//结果是'{"a":"hello","b":"w
 
 #####常用类型
 任何支持的类型都可以通过JSON来表示，例如字符串、数字、对象、数组等。但是对象和数组是比较特殊且常用的类型。
+
+
+####引申
+将多个对象合并成一个对象的方法：Object.assign(合并的对象，传入合并中的对象...);
+
+```javascript
+let user = {name:'dary',age:21};
+let page = {pageSize:10,currentPage:1};
+let newObj = {};
+
+Object.assign(newObj,user,page);
+```
