@@ -37,6 +37,18 @@
 - git remote add origin 远程仓库地址
 - git remote -v 查看关联地址
 
+## 多人协作
+- git remote add origin xxx.git 给本地关联一个远程仓库
+- git push -u origin master 将本地master推送到远程库，并制定push命令的默认远程库
+### 在本地创建开发分支dev,并推送到远程仓库中，所有人都在dev分支上提交代码
+   - git branch dev
+   - git push origin dev
+   开发人员在本地创建一个远程库dev分支的副本dary
+   - git pull 更新
+   - git checkout -b dary origin/dev 在远程origin/dev分支的基础上创建本地dev分支
+   - git branch --set-upstream-to dary origin/dev 将本地dary分支与远程分支关联起来
+   
+
 # 常用linux命令 #
 
 1. mkdir 文件命令  创建文件夹
