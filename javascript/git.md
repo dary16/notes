@@ -40,6 +40,19 @@
 ## 多人协作
 - git remote add origin xxx.git 给本地关联一个远程仓库
 - git push -u origin master 将本地master推送到远程库，并制定push命令的默认远程库
+
+## 本地分支dary到dev,所在分支：dary
+  - git add .
+  - git commit -m '注释'
+  - git checkout dev
+  ### dev分支
+   -git merge dary
+   - git pull origin dev
+   - git push --set-upstream origin dev
+   #### dev 到master ,所在分支：master
+   - git merge dev
+   - git pull origin master
+   - git push origin master
 ### 在本地创建开发分支dev,并推送到远程仓库中，所有人都在dev分支上提交代码
    - git branch dev
    - git push origin dev
