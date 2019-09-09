@@ -1,1 +1,118 @@
-记录移动端开发注意事项
+
+### 移动端开发注意一下几个问题：
+1.什么是viewport?它的作用是啥？
+  视口类型
+  viewport 指浏览器的窗口，即浏览器上用来显示网页的那部分区域，是用户网页的可视区域。
+  viewport 的功能在于控制你网站的最高块状（block）容器：<html>元素。可以理解为 viewport 是容纳 <html> 元素的元素。<html> 元素的宽度为浏览器的宽度，即为 viewport 宽度的100%。
+  在移动端和pc端，视口是不同的。pc端的视口是浏览器窗口区域，而在移动端则有三个不同的视口概念：布局视口、视觉视口、理想视口。
+
+  layout viewport（布局视口）：网页布局的基准窗口，在PC浏览器上，相当于当前浏览器的窗口大小（不包括borders 、margins、滚动条）。在移动端，布局视口被赋予一个默认值，大部分为980px，这保证PC的网页可以在手机浏览器上呈现，但是非常小，用户可以手动对网页进行放大。
+  可以通过 document.documentElement.clientWidth/clientHeight 获取网页在标准模式下的布局视口大小。
+  visual viewport（视觉视口）：用户在移动设备屏幕上能看到的那部分区域。
+  可以通过  window.innerWidth / innerHeight 来获取视觉视口大小。
+  ideal viewport（理想视口）：网站页面在移动端展示的理想大小。使页面的宽度跟设备宽度一致（布局视口=理想视口 = 视觉视口），我们就能在移动屏幕上看到正常舒服的页面。
+  可以通过调用 screen.width / height 来获取理想视口大小。
+  
+  
+#### viewport 的设置不会对 PC 页面产生影响，但对于移动页面却很重要。
+
+#### 基本用法和作用：
+```html
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+```
+上面这个基本的设置：
+
+width=device-width：表示让 布局视口 的宽度等于设备宽度；
+initial-scale=1：表示页面的初始缩放比例为1，相当于让 视觉视口 等于 理想视口；
+maximum-scale=1.0 表示页面的最大缩放比为1；
+user-scalable=no 表示不允许用户对页面进行缩放操作。
+
+
+2.什么是 rem？它的布局原理是什么？
+rem（font size of the root element）：是指相对于根元素的字体大小的单位，其布局的本质是等比缩放，一般是基于宽度。
+
+3. 为什么要进行 scale 缩放？scale 与 dpr 的关系？
+dpr ( device pixel ratio)：设备像素比，即设备物理像素与逻辑像素(css像素)的比例。
+缩放会影响 布局视口 的大小，当我们在移动端对页面进行放大和缩小时，实际上是在改变 CSS 像素的大小，而 scale 缩放的目的就是为了使 CSS 像素适应移动端的设备像素，而这个缩放是通过两个关键的元素设置来实现的：
+```html
+width=device-width,initial-scale=1/dpr
+```
+做的事情就是先把布局视口放大dpr倍，然后再整体缩放相应倍数以适应设备尺寸，这样就能够使css像素和设备物理像素一对一了。
+
+```javascript
+var isAndroid = win.navigator.appVersion.match(/android/gi);
+var isIPhone = win.navigator.appVersion.match(/iphone/gi);
+var devicePixelRatio = win.devicePixelRatio;
+if (isIPhone) {
+    // iOS下，对于2和3的屏，用2倍的方案，其余的用1倍方案
+    if (devicePixelRatio >= 3 && (!dpr || dpr >= 3)) {                
+        dpr = 3;
+    } else if (devicePixelRatio >= 2 && (!dpr || dpr >= 2)){
+        dpr = 2;
+    } else {
+        dpr = 1;
+    }
+} else {
+    // 其他设备下，仍旧使用1倍的方案
+    dpr = 1;
+}
+scale = 1 / dpr;
+```
+#### 💡rem 是为了解决不同机型不同宽度的问题，scale是为了解决dpr的问题。移动端自适应与dpr是无关的。
+
+通过上面的 rem 换算，我们能够知道，如何把视觉稿（750px）中元素的 px 转换成 rem。
+(1) 设置 html font-size，如将手机屏幕分成10份：
+```javascript
+<script>
+    var dpr = window.devicePixelRatio;
+    var meta = document.createElement('meta');
+
+    // dpr
+    meta.setAttribute('content', 'initial-scale=' + 1 / dpr + ', maximum-scale=' + 1 / dpr + ', minimum-scale=' + 1 / dpr + ', user-scalable=no');
+    document.getElementsByTagName('head')[0].appendChild(meta);
+
+    // rem
+    document.addEventListener('DOMContentLoaded', function (e) {
+        document.getElementsByTagName('html')[0].style.fontSize = window.innerWidth / 10 + 'px';
+    }, false);
+</script>
+```
+（2）假设元素宽度为 300px，则元素宽度：
+
+x=(300px/750px)*10rem = 4.267rem
+
+#### scss方案
+```html
+$ue-width: 750; /* ue图的宽度 */
+
+@function px2rem($px) {
+  @return #{$px/$ue-width*10}rem;
+}
+
+p {
+  width: px2rem(100);
+}
+```
+
+#### postcss-pxorem方案
+```javascript
+// postcss.config.js
+const pxtorem = require('postcss-pxtorem');
+const pxtoremOpts = {
+    rootValue: 16,  // 根字体大小，默认16
+    unitPrecision: 5,  // 精度
+    propList: ['font', 'font-size', 'line-height', 'letter-spacing'],  // 可以将px转换成rem的属性
+    selectorBlackList: [],  // 选择器忽略并保留px
+    replace: true,  // 替换包含rems的规则
+    mediaQuery: false,  // 是否允许在媒体查询中转换px
+    minPixelValue: 2  // 设置要替换的最小像素值
+};
+module.exports = {
+  plugins: [
+    pxtorem(pxtoremOpts),
+  ],
+};
+```
+
+
+
