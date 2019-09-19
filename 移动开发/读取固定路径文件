@@ -1,0 +1,23 @@
+###读取固定文件下内容
+需求：在平板上指定一个文件夹存放数据，整个项目都是没有接口的，通过连接USB传送文件数据，因为保密性
+解决方案：需要读取指定文件内容并存储到缓存里，同时改的内容也需要存到缓存里
+
+用的是vue开发，打包用hbuilder，访问文件内容用的是html5+ plus的getFile方法，下面具体贴一下代码：
+```javascript
+document.addEventListener( "plusready", onPlusReady, false );
+  // 扩展API加载完毕，现在可以正常调用扩展API
+  function onPlusReady() {
+    plus.io.requestFileSystem( plus.io.PRIVATE_WWW, function(fs){
+    // fs.root是根目录操作对象DirectoryEntry
+    fs.root.getFile('/mnt/shell/emulated/0/Others/all.json',{create:false}, function(fileEntry){
+      fileEntry.file( function(file){
+      var fileReader = new plus.io.FileReader();
+      alert("getFile:" + JSON.stringify(file));
+      fileReader.readAsText(file, 'utf-8');
+      fileReader.onloadend = function(evt) {
+      alert(evt.target.result);
+  }
+}
+```
+getFile第一个参数是路径，可以通过模拟器上传文件来测试
+evt.target.result为读取到的内容，然后用localstorage存储到缓存里
