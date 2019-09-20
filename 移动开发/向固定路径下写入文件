@@ -1,0 +1,32 @@
+####需求：向指定路径下存入数据，继上次读文件存入缓存中，现在要取缓存中的文件存入指定路径下
+```javacript
+document.addEventListener("plusready", onPlusReady, false);
+	var data = {
+		"name":"dary",
+		"age":18
+	};
+    // 扩展API加载完毕，现在可以正常调用扩展API
+    function onPlusReady() {
+        plus.io.requestFileSystem(plus.io.PRIVATE_WWW, function(fs) {
+            fs.root.getFile('/storage/emulated/legacy/Android/data/gds.xlgl.xlss/data/base/base.json', {
+                create: true
+            }, function(fileEntry) {
+                fileEntry.file(function(file) {
+                    var fileWrite = new plus.io.FileReader;
+                    fileEntry.createWriter(function(fileWrite) {
+                        fileWrite.seek(0);//0代表清空后写入，fileWrite.length代表往后面追加内容
+                        fileWrite.write(data);//将数据写入
+                        fileWrite.onwrite = function(e) {
+                            var fileReader = new plus.io.FileReader();
+                            console.log("getFile:" + JSON.stringify(file));
+                            fileReader.readAsText(file, 'utf-8');
+                            fileReader.onloadend = function(evt) {
+                                alert("输出结果：" + "\n" + evt.target.result);
+                            }
+                        }
+                    })
+                });
+            });
+        });
+    }
+```
