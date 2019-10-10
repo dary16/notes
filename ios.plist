@@ -35,7 +35,7 @@
             <key>metadata</key>
             <dict>
                 <key>bundle-identifier</key>
-                <string>游戏的bundleId</string>        				<!-- 游戏的bundleId, 比如com.linxinfa.mygame -->
+                <string>com.apple.compilers.llvm.clang.1_0</string>        			
                 <key>bundle-version</key>
                 <string>1.0.0</string>
                 <key>kind</key>
