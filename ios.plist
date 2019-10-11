@@ -27,9 +27,9 @@
             <key>metadata</key>
             <dict>
                 <key>bundle-identifier</key>
-                <string>com.app.dairui</string>        			
+                <string>cn.e-u.apple</string>        			
                 <key>bundle-version</key>
-                <string>2</string>
+                <string>10001</string>
                 <key>kind</key>
                 <string>software</string>
                 <key>title</key>
