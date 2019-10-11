@@ -17,14 +17,6 @@
                 </dict>
                 <dict>
                     <key>kind</key>
-                    <string>full-size-image</string>
-                    <key>needs-shine</key>
-                    <false/>
-                    <key>url</key>
-                    <string></string>
-                </dict>
-                <dict>
-                    <key>kind</key>
                     <string>display-image</string>
                     <key>needs-shine</key>
                     <false/>
@@ -37,11 +29,11 @@
                 <key>bundle-identifier</key>
                 <string>com.apple.compilers.llvm.clang.1_0</string>        			
                 <key>bundle-version</key>
-                <string>1.0.0</string>
+                <string>6.0</string>
                 <key>kind</key>
                 <string>software</string>
                 <key>title</key>
-                <string>游戏名字</string>   							 <!-- 游戏名字 -->
+                <string>海河工程</string>   							 <!-- 名字 -->
             </dict>
         </dict>
     </array>
