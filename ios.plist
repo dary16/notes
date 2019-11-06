@@ -29,7 +29,7 @@
                 <key>bundle-identifier</key>
                 <string>cn.e-u.apple</string>        			
                 <key>bundle-version</key>
-                <string>10007</string>
+                <string>1</string>
                 <key>kind</key>
                 <string>software</string>
                 <key>title</key>
