@@ -1,6 +1,10 @@
 ### 基础权限 ###
 Android权限配置说明
+
+
 API权限
+
+
 | API权限 | 说明 |
 | ------ | ------ |
 |	<uses-permission android:name="android.permission.INTERNET"/> | 允许程序访问网络 |
@@ -8,6 +12,8 @@ API权限
 
 Audio
 调用plus.audio.*使用到的权限集
+
+
 | API权限 | 说明 |
 | ------ | ------ |
 |	<uses-permission android:name="android.permission.CAMERA"/> | 允许程序使用照相设备 |
@@ -15,6 +21,8 @@ Audio
 
 Contacts
 调用plus.contacts.*使用到的权限集
+
+
 | API权限 | 说明 |
 | ------ | ------ |
 |	<uses-permission android:name="android.permission.GET_ACCOUNTS"/> | 允许程序访问Accounts Service账户列表 |
@@ -23,6 +31,8 @@ Contacts
 
 Device
 调用plus.device、plus.screen、plus.display、plus.networkinfo、plus.os.* 使用到的权限集
+
+
 | API | 权限 | 说明 |
 | ------ | ------ | ------ |
 | plus.device.setWakelock();plus.device.isWakelock(); |	<uses-permission android:name="android.permission.WAKE_LOCK"/> | 允许程序保持进程不进入休眠状态 |
@@ -34,12 +44,16 @@ Device
 
 Geolocation
 调用plus.messageing.*使用到的权限集
+
+
 | API权限 | 说明 |
 | ------ | ------ |
 |	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/> | 允许程序访问位置信息 |
 
 Messageing
 调用plus.messageing.*使用得到的权限集
+
+
 | API权限 | 说明 |
 | ------ | ------ |
 |	<uses-permission android:name="android.permission.SEND_SMS"/> | 允许程序发送SMS短信 |
