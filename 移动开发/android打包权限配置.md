@@ -7,8 +7,8 @@ API权限
 
 | API权限 | 说明 |
 | ------ | ------ |
-|	<uses-permission android:name="android.permission.INTERNET"/> | 允许程序访问网络 |
-| <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/> | 允许程序读写扩展存储卡 |
+|	'<uses-permission android:name="android.permission.INTERNET"/>' | 允许程序访问网络 |
+| '<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>' | 允许程序读写扩展存储卡 |
 
 Audio
 调用plus.audio.*使用到的权限集
