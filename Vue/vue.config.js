@@ -75,6 +75,9 @@ module.exports = {
     devServer: {
         host: '0.0.0.0', //允许外部ip访问
         port: 8080, //端口
+        inline: true,//设置为true,当源文件改变时会自动刷新页面
+        open: true,//用于devServer启动且第一次构建完成时，自动使用系统默认浏览器去打开
+        overlay:true,//在编译出错的时候，在浏览器页面上显示错误
         proxy: {
             './api': {
                 target: 'http://192.168.0.100',
