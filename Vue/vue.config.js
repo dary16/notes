@@ -79,11 +79,13 @@ module.exports = {
         open: true,//用于devServer启动且第一次构建完成时，自动使用系统默认浏览器去打开
         overlay:true,//在编译出错的时候，在浏览器页面上显示错误
         proxy: {
-            './api': {
-                target: 'http://192.168.0.100',
+            '/webService': {
+                // target: 'http://monitor.tj.chinatowercom.cn/webService',
+                target: 'http://192.168.15.205/webService',
+                // target: 'http://192.168.200.159/webService',
                 changeOrigin: true, //允许websockets跨域
                 pathRewrite: {
-                    '^/proxy': ''
+                    '^/webService': ''
                 }
             }
         }
