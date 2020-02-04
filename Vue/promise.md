@@ -48,3 +48,13 @@ then方法在执行最后必须返回一个新的Promise对象
 我们需要对原 fulfilledHandler 和 rejectedHandler 进行包装，把它们和新 Promise 队列的resolve 和 reject 方法分别放置到新的函数中，并把这个新的函数添加到原有任务队列中调用
 
 简单来说：把新返回的Promise 对象的 resolve 和 reject 与 then 中执行的 fulfilledHandler 和 rejectedHandler 添加到一个任务队列中执行，这样才能使用原有的 then 执行完成后才执行新的 Promise 中的 then
+
+上面是默认情况下的处理情况，其实then方法的处理更为复杂
+
+当一个Promise 完成(fulfilled)或者失败(rejected)，返回函数将被异步调用（由当前的线程循环来调度完成），具体的返回值依据以下规则返回：
+- 如果then中的回调函数没有返回值，那么then返回的Promise将会成为接受状态，并且该接受状态的回调函数的参数为undefined
+- 如果then中的回调函数返回一个值，那么then返回的Promise将会成为接受状态，并且将返回的值作为接受状态的回调函数的参数值
+- 如果then中的回调函数抛出一个错误，那么then返回的Promise将会成为拒绝状态，并且将抛出的错误作为拒绝状态的回调函数的参数值
+- 如果then中的回调函数返回一个已经是接受状态的Promise,那么then返回的Promise也会成为接受状态，并且将那个Promise的接受状态的回调函数的参数值作为该返回的Promise的接受状态回调函数的参数值
+- 如果then中的回调函数返回一个已经是拒绝状态的Promise,那么then返回Promise也会成为拒绝状态，并且将那个Promise的拒绝状态的回调函数的参数值作为该被返回的Promise的拒绝状态回调函数的参数值
+- 如果then中的回调函数返回一个未定状态(pending)的Promise，那么then返回Promise的状态也是未定的，并且它的终态与那个Promise的终态相同；同时，它变为终态时调用的回调函数参数与那个Promise变为终态时的回调函数的参数是相同的
